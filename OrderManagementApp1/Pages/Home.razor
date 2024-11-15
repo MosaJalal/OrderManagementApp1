@@ -1,0 +1,64 @@
+﻿@page "/"
+@using MudBlazor
+@using OrderManagementApp1.Models
+
+<PageTitle>Orderhantering</PageTitle>
+
+<MudContainer>
+    <MudTable Items="orders" Hover="true">
+        <HeaderContent>
+            <MudTh>Order ID</MudTh>
+            <MudTh>Kundnamn</MudTh>
+            <MudTh>Belopp</MudTh>
+            <MudTh>Åtgärder</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.OrderId</MudTd>
+            <MudTd>@context.CustomerName</MudTd>
+            <MudTd>@context.TotalAmount SEK</MudTd>
+            <MudTd>
+                <MudButton Color="Color.Primary" OnClick="@(() => PayOrder(context))">Betala</MudButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <MudDivider Class="my-4" />
+
+    <MudText Typo="Typo.h6">Lägg till ny order</MudText>
+    <MudTextField @bind-Value="newCustomerName" Label="Kundnamn" Variant="Variant.Filled" />
+    <MudTextField @bind-Value="newTotalAmount" Label="Belopp" Variant="Variant.Filled" Type="number" />
+    <MudButton OnClick="AddOrder" Color="Color.Success">Lägg till</MudButton>
+</MudContainer>
+
+@code {
+    private List<Order> orders = new()
+    {
+        new Order { OrderId = Guid.NewGuid(), CustomerName = "Mosa Jalal", TotalAmount = 1000 },
+        new Order { OrderId = Guid.NewGuid(), CustomerName = "Ahmed Ali", TotalAmount = 500 }
+    };
+
+    private string newCustomerName;
+    private decimal newTotalAmount;
+
+    private void AddOrder()
+    {
+        if (!string.IsNullOrWhiteSpace(newCustomerName) && newTotalAmount > 0)
+        {
+            orders.Add(new Order
+            {
+                OrderId = Guid.NewGuid(),
+                CustomerName = newCustomerName,
+                TotalAmount = newTotalAmount
+            });
+
+            newCustomerName = string.Empty;
+            newTotalAmount = 0;
+        }
+    }
+
+    private void PayOrder(Order order)
+    {
+        // Här kan vi använda en adapter för att hantera betalningen
+        Console.WriteLine($"Betalar order: {order.OrderId}, Belopp: {order.TotalAmount} SEK");
+    }
+}
