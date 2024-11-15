@@ -13,7 +13,3 @@ OrderManagementApp1 är en enkel Blazor WebAssembly-applikation för hantering a
 - **.NET 8**: För utveckling med senaste funktionalitet.
 - **CQRS och Adapter Pattern**: För tydlig separation av logik och hantering av betalningar.
 
-## Hur man kör projektet
-1. Klona repot:
-   ```bash
-   git clone https://github.com/<ditt-användarnamn>/OrderManagementApp1.git
