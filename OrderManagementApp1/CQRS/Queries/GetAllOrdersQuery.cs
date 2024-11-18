@@ -1,4 +1,4 @@
-﻿namespace OrderManagementApp1.CQRS
+﻿namespace OrderManagementApp1.CQRS.Queries
 {
     public class GetAllOrdersQuery
     {

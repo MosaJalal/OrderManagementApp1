@@ -1,25 +1,50 @@
 ﻿namespace OrderManagementApp1.Services
 {
-    // Importerar nödvändiga namnrymder
-    using OrderManagementApp1.Models; // För att använda Order-modellen
-    using System.Collections.Generic; // För List och IEnumerable
+    using OrderManagementApp1.Models;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    // En tjänst som hanterar logik för att lagra och läsa ordrar
+    // Tjänst för att hantera ordrar
     public class OrderService
     {
-        // En privat lista som fungerar som en in-memory-databas för ordrar
-        private readonly List<Order> _orders = new();
+        private readonly List<Order> _orders = new(); // Intern lista som fungerar som in-memory-databas
 
-        // En metod som returnerar alla ordrar
-        public IEnumerable<Order> GetAllOrders() => _orders;
-        // IEnumerable används för att returnera en "läsbar" version av listan
-        // utan att ge direkt åtkomst till den privata _orders-listan.
-
-        // En metod för att lägga till en ny order i listan
+        // Lägg till en ny order
         public void AddOrder(Order order)
         {
-            order.OrderId = Guid.NewGuid(); // Skapar ett unikt ID för varje order
-            _orders.Add(order); // Lägger till den nya ordern i listan
+            // Validera att kundnamn inte är tomt
+            if (string.IsNullOrWhiteSpace(order.CustomerName))
+                throw new ArgumentException("Kundnamn får inte vara tomt");
+
+            // Validera att beloppet är större än 0
+            if (order.TotalAmount <= 0)
+                throw new ArgumentException("Belopp måste vara större än 0");
+
+            order.OrderId = Guid.NewGuid(); // Skapa unikt ID för ordern
+            _orders.Add(order); // Lägg till ordern i listan
+        }
+
+        // Markera en order som betald
+        public void MarkAsPaid(Guid orderId)
+        {
+            var order = _orders.FirstOrDefault(o => o.OrderId == orderId); // Hitta ordern via ID
+
+            if (order == null)
+                throw new ArgumentException("Order med angivet ID hittades inte");
+
+            order.IsPaid = true; // Markera ordern som betald
+        }
+
+        // Returnera alla ordrar som DTOs
+        public IEnumerable<OrderDto> GetAllOrdersAsDto()
+        {
+            return _orders.Select(order => new OrderDto
+            {
+                OrderId = order.OrderId,
+                CustomerName = order.CustomerName,
+                TotalAmount = order.TotalAmount,
+                Status = order.IsPaid ? "Betald" : "Obetald"
+            });
         }
     }
 }

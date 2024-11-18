@@ -1,6 +1,9 @@
 ﻿@page "/"
 @using MudBlazor
 @using OrderManagementApp1.Models
+@inject OrderManagementApp1.Services.OrderService OrderService
+
+
 
 <PageTitle>Orderhantering</PageTitle>
 
@@ -29,36 +32,3 @@
     <MudTextField @bind-Value="newTotalAmount" Label="Belopp" Variant="Variant.Filled" Type="number" />
     <MudButton OnClick="AddOrder" Color="Color.Success">Lägg till</MudButton>
 </MudContainer>
-
-@code {
-    private List<Order> orders = new()
-    {
-        new Order { OrderId = Guid.NewGuid(), CustomerName = "Mosa Jalal", TotalAmount = 1000 },
-        new Order { OrderId = Guid.NewGuid(), CustomerName = "Ahmed Ali", TotalAmount = 500 }
-    };
-
-    private string newCustomerName;
-    private decimal newTotalAmount;
-
-    private void AddOrder()
-    {
-        if (!string.IsNullOrWhiteSpace(newCustomerName) && newTotalAmount > 0)
-        {
-            orders.Add(new Order
-            {
-                OrderId = Guid.NewGuid(),
-                CustomerName = newCustomerName,
-                TotalAmount = newTotalAmount
-            });
-
-            newCustomerName = string.Empty;
-            newTotalAmount = 0;
-        }
-    }
-
-    private void PayOrder(Order order)
-    {
-        // Här kan vi använda en adapter för att hantera betalningen
-        Console.WriteLine($"Betalar order: {order.OrderId}, Belopp: {order.TotalAmount} SEK");
-    }
-}

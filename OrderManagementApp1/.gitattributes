@@ -1,0 +1,12 @@
+﻿# Ignorera alla CSS-filer
+*.css linguist-vendored
+
+# Ignorera JavaScript-filer
+*.js linguist-vendored
+
+# Ignorera wwwroot-mappen
+wwwroot/* linguist-vendored
+
+# Ignorera bin- och obj-mappen
+bin/* linguist-vendored
+obj/* linguist-vendored

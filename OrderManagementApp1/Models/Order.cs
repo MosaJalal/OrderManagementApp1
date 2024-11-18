@@ -6,5 +6,7 @@
         public string CustomerName { get; set; } // Namnet på kunden som lade ordern.
         public decimal TotalAmount { get; set; } //  Totalsumman för ordern.
 
+        public bool IsPaid { get; set; } = false;
+
     }
 }
